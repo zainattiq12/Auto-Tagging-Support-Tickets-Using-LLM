@@ -1,0 +1,31 @@
+from transformers import pipeline
+
+generator = pipeline(
+    "text2text-generation",
+    model="google/flan-t5-base"
+)
+
+ticket = "Unable to login after password reset"
+
+prompt = f"""
+Classify the support ticket.
+
+Examples:
+
+Ticket: Password reset email not received
+Tags: Password Reset, Login Issue, Account Access
+
+Ticket: Payment deducted twice
+Tags: Payment Problem, Refund Request, Billing
+
+Ticket: {ticket}
+
+Provide top 3 tags only.
+"""
+
+result = generator(
+    prompt,
+    max_length=50
+)
+
+print(result[0]["generated_text"])
